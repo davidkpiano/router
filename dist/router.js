@@ -24,7 +24,7 @@ define(["assert", 'route-recognizer'], function($__0,$__2) {
       this.children.push(child);
       return child;
     },
-    registerViewPort: function(view) {
+    registerViewport: function(view) {
       var name = arguments[1] !== (void 0) ? arguments[1] : 'default';
       this.ports[name] = view;
       return this.renavigate();

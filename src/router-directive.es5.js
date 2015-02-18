@@ -6,27 +6,27 @@
 angular.module('ngNewRouter', ['ngNewRouter.generated']).
   value('$routeParams', {}).
   provider('$componentLoader', $componentLoaderProvider).
-  directive('routerViewPort', routerViewPortDirective).
-  directive('routerViewPort', routerViewPortFillContentDirective).
+  directive('routerViewport', routerViewportDirective).
+  directive('routerViewport', routerViewportFillContentDirective).
   directive('routerLink', routerLinkDirective);
 
 
 
 /**
- * @name routerViewPort
+ * @name routerViewport
  *
  * @description
- * A routerViewPort is where resolved content goes.
+ * A routerViewport is where resolved content goes.
  *
  * ## Use
  *
  * ```html
- * <div router-view-port="name"></div>
+ * <div router-viewport="name"></div>
  * ```
  *
- * The value for the `routerViewPort` attribute is optional.
+ * The value for the `routerViewport` attribute is optional.
  */
-function routerViewPortDirective($animate, $compile, $controller, $templateRequest, $rootScope, $location, $componentLoader, $router) {
+function routerViewportDirective($animate, $compile, $controller, $templateRequest, $rootScope, $location, $componentLoader, $router) {
   var rootRouter = $router;
 
   $rootScope.$watch(function () {
@@ -49,14 +49,14 @@ function routerViewPortDirective($animate, $compile, $controller, $templateReque
     transclude: 'element',
     terminal: true,
     priority: 400,
-    require: ['?^^routerViewPort', 'routerViewPort'],
+    require: ['?^^routerViewport', 'routerViewport'],
     link: viewPortLink,
     controller: function() {},
-    controllerAs: '$$routerViewPort'
+    controllerAs: '$$routerViewport'
   };
 
   function viewPortLink(scope, $element, attrs, ctrls, $transclude) {
-    var viewPortName = attrs.routerViewPort || 'default',
+    var viewPortName = attrs.routerViewport || 'default',
         ctrl = ctrls[0],
         myCtrl = ctrls[1],
         router = (ctrl && ctrl.$$router) || rootRouter;
@@ -91,7 +91,7 @@ function routerViewPortDirective($animate, $compile, $controller, $templateReque
       var componentName = typeof component === 'string' ? component : component[viewPortName];
       return $componentLoader(componentName);
     }
-    router.registerViewPort({
+    router.registerViewport({
       canDeactivate: function (instruction) {
         return !ctrl || !ctrl.canDeactivate || ctrl.canDeactivate();
       },
@@ -109,7 +109,7 @@ function routerViewPortDirective($animate, $compile, $controller, $templateReque
 
         var locals = {
           $scope: newScope,
-          $router: scope.$$routerViewPort.$$router = router.childRouter()
+          $router: scope.$$routerViewport.$$router = router.childRouter()
         };
 
         if (router.context) {
@@ -149,11 +149,11 @@ function routerViewPortDirective($animate, $compile, $controller, $templateReque
   }
 }
 
-function routerViewPortFillContentDirective($compile) {
+function routerViewportFillContentDirective($compile) {
   return {
     restrict: 'EA',
     priority: -400,
-    require: 'routerViewPort',
+    require: 'routerViewport',
     link: function(scope, $element, attrs, ctrl) {
       var template = ctrl.$$template;
       $element.html(template);
@@ -209,7 +209,7 @@ function routerLinkDirective($router, $location, $parse) {
   });
 
   return {
-    require: '?^^routerViewPort',
+    require: '?^^routerViewport',
     restrict: 'A',
     link: routerLinkDirectiveLinkFn
   };
